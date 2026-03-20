@@ -8,6 +8,7 @@ from telegram.ext import (
     filters,
 )
 
+import lib.fetch  # noqa: F401
 import lib.rwfile  # noqa: F401
 from lib.telegram import handle_message, reset, start
 
