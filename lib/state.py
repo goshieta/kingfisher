@@ -19,7 +19,7 @@ class AppState:
         api_key = os.getenv("GROQ_API_KEY")
 
         model = GroqModel(
-            "llama-3.3-70b-versatile",
+            "meta-llama/llama-4-maverick-17b-128e-instruct",
             provider=GroqProvider(api_key=api_key),
         )
 
