@@ -10,12 +10,13 @@ from telegram.ext import (
     filters,
 )
 
-import lib.fetch  # noqa: F401
-import lib.rwfile  # noqa: F401
+import lib.tools.fetch  # noqa: F401
+import lib.tools.rwfile  # noqa: F401
 from lib.telegram import handle_message, reset, start
 
 
 def main():
+    print("起動中...")
     telegram_token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not telegram_token:
         raise ValueError("TELEGRAM_BOT_TOKEN が設定されていません")
@@ -28,16 +29,18 @@ def main():
     telegram_app.add_handler(CommandHandler("reset", reset))
 
     telegram_app.run_polling(allowed_updates=Update.ALL_TYPES)
+    print("起動完了。Telegram Botにstartシグナルを送信してください。")
 
 
 def make_memory_cache():
+    print("メモリコピー開始")
     memory_template_dir = Path("memory_template")
     memory_dir = Path("memory")
     if memory_dir.exists():
         shutil.rmtree(memory_dir)
     memory_dir.mkdir(exist_ok=True)
-    for file in memory_template_dir.glob("*"):
-        shutil.copy(file, memory_dir / file.name)
+    shutil.copytree(memory_template_dir, memory_dir, dirs_exist_ok=True)
+    print("メモリコピー完了")
 
 
 if __name__ == "__main__":

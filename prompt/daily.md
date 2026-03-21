@@ -1,4 +1,4 @@
-# YYYY-MM-DD
+# {date_str}
 ## 進行中のプロジェクト
 - Schedule
 

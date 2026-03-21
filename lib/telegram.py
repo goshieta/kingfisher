@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -9,7 +11,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     AppState.histories[update.effective_chat.id].clear()
-    await update.message.reply_text("こんにちは！何でも聞いてください。")
+
+    chat_id = update.effective_chat.id
+    startup_message = Path("prompt/startup.md").read_text(encoding="UTF-8")
+
+    await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+
+    result = await AppState.agent.run(
+        startup_message,
+        message_history=AppState.histories[chat_id],
+    )
+
+    AppState.histories[chat_id] = result.all_messages()
+
+    await update.message.reply_text(result.output)
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

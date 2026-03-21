@@ -1,9 +1,6 @@
-from pathlib import Path
-
 from lib.state import AppState
 
-NOTES_DIR = Path("memory")
-NOTES_DIR.mkdir(exist_ok=True)
+NOTES_DIR = AppState.NOTES_DIR
 
 
 @AppState.agent.tool_plain
