@@ -29,20 +29,7 @@ def main():
     telegram_app.add_handler(CommandHandler("reset", reset))
 
     telegram_app.run_polling(allowed_updates=Update.ALL_TYPES)
-    print("起動完了。Telegram Botにstartシグナルを送信してください。")
-
-
-def make_memory_cache():
-    print("メモリコピー開始")
-    memory_template_dir = Path("memory_template")
-    memory_dir = Path("memory")
-    if memory_dir.exists():
-        shutil.rmtree(memory_dir)
-    memory_dir.mkdir(exist_ok=True)
-    shutil.copytree(memory_template_dir, memory_dir, dirs_exist_ok=True)
-    print("メモリコピー完了")
 
 
 if __name__ == "__main__":
-    make_memory_cache()
     main()

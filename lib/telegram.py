@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 from telegram import Update
@@ -11,6 +12,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     AppState.histories[update.effective_chat.id].clear()
+    make_memory_cache()
 
     chat_id = update.effective_chat.id
     startup_message = Path("prompt/startup.md").read_text(encoding="UTF-8")
@@ -55,3 +57,14 @@ async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     AppState.histories[update.effective_chat.id].clear()
     await update.message.reply_text("会話履歴をリセットしました。")
+
+
+def make_memory_cache():
+    print("メモリコピー開始")
+    memory_template_dir = Path("memory_template")
+    memory_dir = Path("memory")
+    if memory_dir.exists():
+        shutil.rmtree(memory_dir)
+    memory_dir.mkdir(exist_ok=True)
+    shutil.copytree(memory_template_dir, memory_dir, dirs_exist_ok=True)
+    print("メモリコピー完了")
