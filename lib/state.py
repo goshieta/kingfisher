@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 
 from dotenv import load_dotenv
-from pydantic_ai import Agent
+from pydantic_ai import Agent, WebSearchTool
 from pydantic_ai.messages import ModelMessage
 from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.google import GoogleProvider
@@ -22,7 +22,11 @@ class AppState:
             "gemini-2.5-flash", provider=GoogleProvider(api_key=api_key)
         )
 
-        cls.agent = Agent(model, instructions="日本語で解答してください。")
+        cls.agent = Agent(
+            model,
+            instructions="日本語で解答してください。",
+            builtin_tools=[WebSearchTool()],
+        )
 
 
 AppState.set_agent()

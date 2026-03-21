@@ -1,4 +1,6 @@
 import os
+import shutil
+from pathlib import Path
 
 from telegram import Update
 from telegram.ext import (
@@ -28,5 +30,16 @@ def main():
     telegram_app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
+def make_memory_cache():
+    memory_template_dir = Path("memory_template")
+    memory_dir = Path("memory")
+    if memory_dir.exists():
+        shutil.rmtree(memory_dir)
+    memory_dir.mkdir(exist_ok=True)
+    for file in memory_template_dir.glob("*"):
+        shutil.copy(file, memory_dir / file.name)
+
+
 if __name__ == "__main__":
+    make_memory_cache()
     main()
