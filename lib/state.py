@@ -21,7 +21,7 @@ class AppState:
         api_key = os.getenv("GOOGLE_API_KEY")
 
         model = GoogleModel(
-            "gemini-2.5-flash", provider=GoogleProvider(api_key=api_key)
+            "gemini-2.5-flash-lite", provider=GoogleProvider(api_key=api_key)
         )
 
         from lib.build_instructions import build_instructions
@@ -32,10 +32,10 @@ class AppState:
             builtin_tools=[],
         )
 
+        import lib.tools.fetch  # noqa: F401
+        import lib.tools.rwfile  # noqa: F401
+        import lib.tools.search  # noqa: F401
+
     @classmethod
     def init_notes_dir(cls):
         cls.NOTES_DIR.mkdir(exist_ok=True)
-
-
-AppState.set_agent()
-AppState.init_notes_dir()

@@ -1,6 +1,4 @@
 import os
-import shutil
-from pathlib import Path
 
 from telegram import Update
 from telegram.ext import (
@@ -10,8 +8,7 @@ from telegram.ext import (
     filters,
 )
 
-import lib.tools.fetch  # noqa: F401
-import lib.tools.rwfile  # noqa: F401
+from lib.state import AppState
 from lib.telegram import handle_message, reset, start
 
 
@@ -32,4 +29,8 @@ def main():
 
 
 if __name__ == "__main__":
+    print("set_agent")
+    AppState.set_agent()
+    print("init_notes_dir")
+    AppState.init_notes_dir()
     main()
